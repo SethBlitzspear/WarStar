@@ -1,0 +1,58 @@
+[
+  {
+    "ContainingType": "API.Endpoints.User",
+    "Method": "AuthenticateUser",
+    "RelativePath": "api/User/",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Application.Dtos.LoginRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Application.Dtos.LoginResponseDto",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "User"
+    ],
+    "EndpointName": "AuthenticateUser"
+  },
+  {
+    "ContainingType": "API.Endpoints.User",
+    "Method": "CreateUser",
+    "RelativePath": "api/User/Create",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "Application.Dtos.CreateUserDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Guid",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "User"
+    ],
+    "EndpointName": "CreateUser"
+  }
+]

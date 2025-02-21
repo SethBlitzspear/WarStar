@@ -1,0 +1,164 @@
+[
+  {
+    "ContainingType": "Api.Endpoints.Shipyard",
+    "Method": "AddComponent",
+    "RelativePath": "api/Shipyard/AddComponent",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "addComponentDto",
+        "Type": "Application.Dtos.ComponentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Guid",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Shipyard"
+    ],
+    "EndpointName": "AddComponent"
+  },
+  {
+    "ContainingType": "Api.Endpoints.Shipyard",
+    "Method": "CreateSpaceShip",
+    "RelativePath": "api/Shipyard/Create",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "spaceShip",
+        "Type": "Application.Dtos.CreateSpaceShipDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Guid",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Shipyard"
+    ],
+    "EndpointName": "CreateSpaceShip"
+  },
+  {
+    "ContainingType": "Api.Endpoints.Shipyard",
+    "Method": "GetComponentType",
+    "RelativePath": "api/Shipyard/GetComponentType/{componentTypeId}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "componentTypeId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Application.Dtos.ComponentTypeDto",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Shipyard"
+    ],
+    "EndpointName": "GetComponentType"
+  },
+  {
+    "ContainingType": "Api.Endpoints.Shipyard",
+    "Method": "GetComponentTypes",
+    "RelativePath": "api/Shipyard/GetComponentTypes",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Application.Dtos.ComponentTypeDto, Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Shipyard"
+    ],
+    "EndpointName": "GetComponentTypes"
+  },
+  {
+    "ContainingType": "Api.Endpoints.Shipyard",
+    "Method": "GetSpaceShips",
+    "RelativePath": "api/Shipyard/GetOwnerSpaceShips/{userId}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Application.Dtos.SpaceShipDto, Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Shipyard"
+    ],
+    "EndpointName": "GetSpaceShips"
+  },
+  {
+    "ContainingType": "Api.Endpoints.Shipyard",
+    "Method": "GetSpaceShipDetail",
+    "RelativePath": "api/Shipyard/GetSpaceShip/{spaceShipId}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "spaceShipId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Application.Dtos.SpaceShipDetailDto",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Shipyard"
+    ],
+    "EndpointName": "GetSpaceShipDetail"
+  }
+]

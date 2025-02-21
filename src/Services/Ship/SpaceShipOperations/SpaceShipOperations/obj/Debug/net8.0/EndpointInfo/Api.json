@@ -1,0 +1,411 @@
+{
+  "x-generator": "NSwag v14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "My Title",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/Shipyard/Create": {
+      "post": {
+        "tags": [
+          "Shipyard"
+        ],
+        "operationId": "CreateSpaceShip",
+        "requestBody": {
+          "x-name": "spaceShip",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSpaceShipDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Shipyard/GetOwnerSpaceShips/{userId}": {
+      "get": {
+        "tags": [
+          "Shipyard"
+        ],
+        "operationId": "GetSpaceShips",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SpaceShipDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Shipyard/GetSpaceShip/{spaceShipId}": {
+      "get": {
+        "tags": [
+          "Shipyard"
+        ],
+        "operationId": "GetSpaceShipDetail",
+        "parameters": [
+          {
+            "name": "spaceShipId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceShipDetailDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Shipyard/GetComponentTypes": {
+      "get": {
+        "tags": [
+          "Shipyard"
+        ],
+        "operationId": "GetComponentTypes",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ComponentTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Shipyard/GetComponentType/{componentTypeId}": {
+      "get": {
+        "tags": [
+          "Shipyard"
+        ],
+        "operationId": "GetComponentType",
+        "parameters": [
+          {
+            "name": "componentTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComponentTypeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Shipyard/AddComponent": {
+      "post": {
+        "tags": [
+          "Shipyard"
+        ],
+        "operationId": "AddComponent",
+        "requestBody": {
+          "x-name": "addComponentDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ComponentDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateSpaceShipDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "SpaceShipDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "SpaceShipDetailDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SpaceShipDto"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "shipLayout": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ComponentDto"
+                  }
+                }
+              },
+              "mass": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "backgroundPowerDraw": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "ComponentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "spaceShipId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "componentTypeId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "componentType": {
+            "$ref": "#/components/schemas/ComponentTypeDto"
+          },
+          "armour": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "structuralIntegrity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minPowerDraw": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxPowerDraw": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lifeSupport": {
+            "type": "boolean"
+          },
+          "mass": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "properties": {
+            "type": "string",
+            "nullable": true
+          },
+          "topComponentId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "bottomComponentId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "leftComponentId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "rightComponentId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "connections": {
+            "$ref": "#/components/schemas/ConnectionType"
+          },
+          "powerCouplings": {
+            "$ref": "#/components/schemas/ConnectionType"
+          }
+        }
+      },
+      "ComponentTypeDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shortName": {
+            "type": "string"
+          },
+          "armour": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "structuralIntegrity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minPowerDraw": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxPowerDraw": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lifeSupport": {
+            "type": "boolean"
+          },
+          "mass": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "properties": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ConnectionType": {
+        "type": "integer",
+        "description": "",
+        "x-enumFlags": true,
+        "x-enumNames": [
+          "None",
+          "Up",
+          "Down",
+          "Left",
+          "Right"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          4,
+          8
+        ]
+      }
+    }
+  }
+}

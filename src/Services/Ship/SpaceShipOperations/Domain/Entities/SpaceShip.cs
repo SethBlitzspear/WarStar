@@ -9,4 +9,5 @@ public sealed class SpaceShip
 
     public int Mass => Components?.Sum(c => c.Mass) ?? 0;
     public int BackgroundPowerDraw => Components?.Sum(c => c.MinPowerDraw) ?? 0;
+    public int ShipSize => Components?.Count ?? 0;
 }

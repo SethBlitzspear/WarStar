@@ -8,6 +8,7 @@ public class SpaceShipDetailDto : SpaceShipDto
     public ComponentDto[][]? ShipLayout { get; set; }
     public int Mass { get; set; }
     public int BackgroundPowerDraw { get; set; }
+    public int ShipSize { get; set; }
 
     public sealed class SpaceShipDetailMappings : Profile
     {

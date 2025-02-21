@@ -1,11 +1,12 @@
 ﻿using Application.Dtos;
 using Application.Interfaces;
+using AutoMapper;
 using Domain.Entities;
 using System.Net.Http.Json;
-using System.Xml.Linq;
 
 namespace Infrastructure.Repositories;
-public class SpaceShipRepository(HttpClient httpClient) : ISpaceShipRepository
+
+public class ShipRepository(HttpClient httpClient, IMapper mapper) : IShipRepository
 {
     public async Task<Guid> CreateSpaceShip(SpaceShip spaceShip)
     {
@@ -17,15 +18,15 @@ public class SpaceShipRepository(HttpClient httpClient) : ISpaceShipRepository
         return Guid.Parse(responseContent.Trim('"'));
     }
 
-    public async Task<List<SpaceShipDto>> GetSpaceShips()
+    public async Task<List<SpaceShip>> GetSpaceShips()
     {
         var response = await httpClient.GetFromJsonAsync<List<SpaceShipDto>>("api/spaceship/");
-        return response ?? [];
+        return mapper.Map<List<SpaceShip>>(response) ?? [];
     }
-    public async Task<SpaceShipDto?> GetSpaceShip(Guid spaceShipId)
+    public async Task<SpaceShip?> GetSpaceShip(Guid spaceShipId)
     {
         var response = await httpClient.GetFromJsonAsync<SpaceShipDto>($"api/spaceship/{spaceShipId}");
-        return response;
+        return mapper.Map<SpaceShip?>(response);
     }
 
     public async Task<Guid> CreateComponent(Component component)
@@ -36,43 +37,43 @@ public class SpaceShipRepository(HttpClient httpClient) : ISpaceShipRepository
         return await response.Content.ReadFromJsonAsync<Guid>();
     }
 
-    public async Task<ComponentDto> GetComponent(Guid componentId)
+    public async Task<Component> GetComponent(Guid componentId)
     {
-        var response = await httpClient.GetFromJsonAsync<ComponentDto>($"api/component/{componentId}");
-        return response ?? new ComponentDto();
+        var response = await httpClient.GetFromJsonAsync<Component>($"api/component/{componentId}");
+        return mapper.Map<Component>(response) ?? new Component();
     }
-    public async Task<ComponentDto> UpdateComponent(ComponentDto componentDto)
+    public async Task<Component> UpdateComponent(Component component)
     {
-        var response = await httpClient.PutAsJsonAsync($"api/component/{componentDto.Id}", componentDto);
+        var response = await httpClient.PutAsJsonAsync($"api/component/{component.Id}", component);
 
-        return await response.Content.ReadFromJsonAsync<ComponentDto>() ?? new ComponentDto();
+        return await response.Content.ReadFromJsonAsync<Component>() ?? new Component();
     }
 
-    public async Task<List<ComponentTypeDto>> GetComponentTypes()
+    public async Task<List<ComponentType>> GetComponentTypes()
     {
         var response = await httpClient.GetFromJsonAsync<List<ComponentTypeDto>>("api/componenttype");
-        return response ?? [];
+        return mapper.Map<List<ComponentType>>(response) ?? [];
     }
-    public async Task<List<ComponentDto>> GetComponents()
+    public async Task<List<Component>> GetComponents()
     {
         var response = await httpClient.GetFromJsonAsync<List<ComponentDto>>("api/component");
-        return response ?? [];
+        return mapper.Map<List<Component>>(response) ?? [];
     }
 
-    public async Task<List<ComponentDto>> GetSpaceShipComponents(Guid spaceShipId)
+    public async Task<List<Component>> GetSpaceShipComponents(Guid spaceShipId)
     {
         var response = await httpClient.GetFromJsonAsync<List<ComponentDto>>($"api/component/SpaceShip/{spaceShipId}");
-        return response ?? [];
+        return mapper.Map<List<Component>>(response) ?? [];
     }
 
-    public async Task<ComponentTypeDto?> GetComponentType(string name)
+    public async Task<ComponentType?> GetComponentType(string name)
     {
         var componentTypes = await GetComponentTypes();
 
         return componentTypes?.Find(ct => ct.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
     }
 
-    public async Task<ComponentTypeDto?> GetComponentType(Guid componentTypeId)
+    public async Task<ComponentType?> GetComponentType(Guid componentTypeId)
     {
         var componentTypes = await GetComponentTypes();
 

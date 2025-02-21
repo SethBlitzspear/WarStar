@@ -5,6 +5,7 @@ C:\Users\smaher\source\repos\WarStar\src\Services\Ship\SpaceShipOperations\Domai
 C:\Users\smaher\source\repos\WarStar\src\Services\Ship\SpaceShipOperations\Domain\obj\Debug\net8.0\Domain.AssemblyInfoInputs.cache
 C:\Users\smaher\source\repos\WarStar\src\Services\Ship\SpaceShipOperations\Domain\obj\Debug\net8.0\Domain.AssemblyInfo.cs
 C:\Users\smaher\source\repos\WarStar\src\Services\Ship\SpaceShipOperations\Domain\obj\Debug\net8.0\Domain.csproj.CoreCompileInputs.cache
+C:\Users\smaher\source\repos\WarStar\src\Services\Ship\SpaceShipOperations\Domain\obj\Debug\net8.0\Domain.sourcelink.json
 C:\Users\smaher\source\repos\WarStar\src\Services\Ship\SpaceShipOperations\Domain\obj\Debug\net8.0\Domain.dll
 C:\Users\smaher\source\repos\WarStar\src\Services\Ship\SpaceShipOperations\Domain\obj\Debug\net8.0\refint\Domain.dll
 C:\Users\smaher\source\repos\WarStar\src\Services\Ship\SpaceShipOperations\Domain\obj\Debug\net8.0\Domain.pdb

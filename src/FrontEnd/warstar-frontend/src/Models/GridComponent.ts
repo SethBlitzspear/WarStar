@@ -10,7 +10,7 @@ export interface GridComponent {
     properties: string,
     armour: number;
     structuralIntegrity: number;
-    lifeSupport: number;
+    lifeSupport: boolean;
     minPowerDraw: number;
     maxPowerDraw: number;
     mass: number;

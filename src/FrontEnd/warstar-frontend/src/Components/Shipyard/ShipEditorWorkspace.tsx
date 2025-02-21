@@ -56,7 +56,7 @@ const ShipEditorWorkspace: React.FC<ShipEditorWorkspaceProps> = ({ spaceShipId, 
             selected: cell.componentType.selected || false,
             armour: cell.armour || 0,
             structuralIntegrity: cell.structuralIntegrity || 0,
-            lifeSupport: cell.lifeSupport || 0,
+            lifeSupport: cell.lifeSupport || false,
             minPowerDraw: cell.minPowerDraw || 0,
             maxPowerDraw: cell.maxPowerDraw || 0,
             mass: cell.mass || 0,
@@ -73,7 +73,7 @@ const ShipEditorWorkspace: React.FC<ShipEditorWorkspaceProps> = ({ spaceShipId, 
         rightComponentId: cell.rightComponentId || undefined,
         armour: cell.armour || 0,
         structuralIntegrity: cell.structuralIntegrity || 0,
-        lifeSupport: cell.lifeSupport || 0,
+        lifeSupport: cell.lifeSupport || false,
         minPowerDraw: cell.minPowerDraw || 0,
         maxPowerDraw: cell.maxPowerDraw || 0,
         mass: cell.mass || 0,
@@ -105,6 +105,7 @@ const ShipEditorWorkspace: React.FC<ShipEditorWorkspaceProps> = ({ spaceShipId, 
     const handleGridUpdate = (updatedGrid: (GridComponent | null)[][]) => {
         setShipGrid(updatedGrid);
         console.log("Updated grid:", updatedGrid);
+        fetchShip();
     };
 
     return (

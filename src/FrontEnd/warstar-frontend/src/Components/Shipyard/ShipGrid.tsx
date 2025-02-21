@@ -62,7 +62,7 @@ const ShipGrid: React.FC<ShipGridProps> = ({ grid, spaceShipId, onUpdate }) => {
             rightComponentId: grid[rowIndex]?.[colIndex + 1]?.id,
             armour: 0,
             structuralIntegrity: 0,
-            lifeSupport: 0,
+            lifeSupport: false,
             minPowerDraw: 0,
             maxPowerDraw: 0,
             mass: 0,

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System.Data.Common;
 
 namespace Application.Services;
-public class ShipYardService(ISpaceShipRepository spaceShipRepository, IMapper mapper, IMemoryCache Cache) : IShipYardService
+public class ShipYardService(IShipRepository spaceShipRepository, IMapper mapper, IMemoryCache Cache) : IShipYardService
 {
     public async Task<Guid> CreateSpaceShip(CreateSpaceShipDto spaceShipDto)
     {
@@ -32,25 +32,25 @@ public class ShipYardService(ISpaceShipRepository spaceShipRepository, IMapper m
         return spaceShip.Id;
     }
 
-    public async Task<List<SpaceShipDto>> GetUserSpaceShips(Guid userId)
+    public async Task<List<SpaceShip>> GetUserSpaceShips(Guid userId)
     {
         var ships = await spaceShipRepository.GetSpaceShips();
         return ships.FindAll(s => s.OwnerId == userId);
     }
 
-    public async Task<SpaceShipDto?> GetSpaceShip(Guid spaceShipId)
+    public async Task<SpaceShip?> GetSpaceShip(Guid spaceShipId)
     {
         return await spaceShipRepository.GetSpaceShip(spaceShipId);
     }
 
-    public async Task<List<ComponentDto>> GetSpaceShipComponents(Guid spaceShipId)
+    public async Task<List<Component>> GetSpaceShipComponents(Guid spaceShipId)
     {
         var components = await spaceShipRepository.GetSpaceShipComponents(spaceShipId);
         var componentTypes = await GetComponentTypes();
 
         foreach (var component in components)
         {
-            component.ComponentType = mapper.Map<ComponentTypeDto>(componentTypes.FirstOrDefault(ct => ct.Id == component.ComponentTypeId))
+            component.ComponentType = componentTypes.FirstOrDefault(ct => ct.Id == component.ComponentTypeId)
                 ?? throw new InvalidOperationException($"ComponentType not found for ID {component.ComponentTypeId}");
         }
 
@@ -97,9 +97,8 @@ public class ShipYardService(ISpaceShipRepository spaceShipRepository, IMapper m
         return mapper.Map<ComponentType>(await spaceShipRepository.GetComponentType(name));
     }
 
-    public async Task<Guid> AddComponent(ComponentDto componentDto)
+    public async Task<Guid> AddComponent(Component component)
     {
-        var component = mapper.Map<Component>(componentDto);
         var componentType = await spaceShipRepository.GetComponentType(component.ComponentTypeId);
         if (componentType == null)
         {
@@ -121,13 +120,13 @@ public class ShipYardService(ISpaceShipRepository spaceShipRepository, IMapper m
         return component.Id;
     }
 
-    public async Task<ComponentDto> GetComponent(Guid componentId)
+    public async Task<Component> GetComponent(Guid componentId)
     {
         return await spaceShipRepository.GetComponent(componentId);
     }
 
-    public async Task<ComponentDto> UpdateComponent(ComponentDto componentDto)
+    public async Task<Component> UpdateComponent(Component component)
     {
-        return await spaceShipRepository.UpdateComponent(componentDto);
+        return await spaceShipRepository.UpdateComponent(component);
     }
 }

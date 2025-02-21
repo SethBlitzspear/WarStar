@@ -253,6 +253,10 @@
               "backgroundPowerDraw": {
                 "type": "integer",
                 "format": "int32"
+              },
+              "shipSize": {
+                "type": "integer",
+                "format": "int32"
               }
             }
           }

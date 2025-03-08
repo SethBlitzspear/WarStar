@@ -19,6 +19,8 @@ public class GetSpaceShipDetail(IShipYardService shipYardService, IShipLayoutSer
         var layoutComponents = layoutService.BuildShipLayout(mapper.Map<List<Component>>(components));
 
         var spaceShip = await shipYardService.GetSpaceShip(request.SpaceShipId);
+        spaceShip!.Components = components;
+
         var spaceShipDto = mapper.Map<SpaceShipDetailDto>(spaceShip);
         spaceShipDto.ShipLayout = mapper.Map<ComponentDto[][]>(layoutComponents);
 

@@ -17,9 +17,9 @@ VALUES
     (@keelComponentId, '96EA7006-3195-4EBB-882A-1823858BB161', @blitzspearId, 15, 15, 10, 100, 0, 0, 0, 100, 12000, ''),  -- Keel
     (@engineComponentId, 'A46766A0-0A4F-4314-A2B8-0AF36163FEC9', @blitzspearId, 15, 15, 2, 30, 1, 10, 1000, 200, 5000, ''),  -- Engine
     (@reactorComponentId, '06CEA7A9-90EF-4CFE-BE6D-FE6BE63583D1', @blitzspearId, 15, 15, 1, 10, 1, 0, 1, 250, 7000, ''),  -- Reactor
-    (@rightLaserComponentId, '89ABEF19-F35D-4AA7-BA0D-FFF02967069C', @blitzspearId, 15, 15, 2, 20, 0, 0, 100, 50, 2000, ''),  -- Weapon
-    (@topLaserComponentId, '89ABEF19-F35D-4AA7-BA0D-FFF02967069C', @blitzspearId, 15, 15, 2, 20, 0, 0, 100, 50, 2000, ''),  -- Weapon
-    (@leftLaserComponentId, '89ABEF19-F35D-4AA7-BA0D-FFF02967069C', @blitzspearId, 15, 15, 2, 20, 0, 0, 100, 50, 2000, '');  -- Weapon
+    (@rightLaserComponentId, '89ABEF19-F35D-4AA7-BA0D-FFF02967069C', @blitzspearId, 15, 15, 2, 20, 0, 0, 100, 50, 2000, '{\"Damage\":2000, \"EffectiveRange\":12, \"FallOffRate\":0.5}'),  -- Weapon
+    (@topLaserComponentId, '89ABEF19-F35D-4AA7-BA0D-FFF02967069C', @blitzspearId, 15, 15, 2, 20, 0, 0, 100, 50, 2000, '{\"Damage\":4000, \"EffectiveRange\":20, \"FallOffRate\":0.2}'),  -- Weapon
+    (@leftLaserComponentId, '89ABEF19-F35D-4AA7-BA0D-FFF02967069C', @blitzspearId, 15, 15, 2, 20, 0, 0, 100, 50, 2000, '{\"Damage\":2000, \"EffectiveRange\":12, \"FallOffRate\":0.5}');  -- Weapon
 
 -- Update components to set foreign key relationships
 UPDATE Components

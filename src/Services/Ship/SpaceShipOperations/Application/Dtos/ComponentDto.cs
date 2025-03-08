@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entities;
+using Domain.Entities.Components;
 using Domain.Enums;
 using System.Text.Json.Serialization;
 
@@ -44,8 +45,58 @@ public class ComponentDto
     {
         public ComponentMappings()
         {
-            CreateMap<Component, ComponentDto>()
-                .ReverseMap();
+            CreateMap<ComponentDto, Component>()
+                .ConvertUsing<ComponentTypeConverter>(); // Use a custom converter for subclass mapping
+
+            CreateMap<Component, ComponentDto>();
+        }
+    }
+
+    public class ComponentTypeConverter : ITypeConverter<ComponentDto, Component>
+    {
+        public Component Convert(ComponentDto source, Component destination, ResolutionContext context)
+        {
+            var componentTypeList = (List<ComponentType>)context.Items["ComponentTypeLookup"];
+            var componentType = componentTypeList.FirstOrDefault(x => x.Id == source.ComponentTypeId);
+
+            Component mappedComponent = componentType.Type switch
+            {
+                "Laser" => new Laser(),
+                "Keel" => new Keel(),
+                "Reactor" => new Reactor(),
+                "Engine" => new Engine(),
+                _ => new Component()
+            };
+
+            // 🚀 **Manually map properties from ComponentDto to Component**
+            mappedComponent.Id = source.Id;
+            mappedComponent.SpaceShipId = source.SpaceShipId;
+            mappedComponent.ComponentTypeId = source.ComponentTypeId;
+            mappedComponent.Armour = source.Armour;
+            mappedComponent.StructuralIntegrity = source.StructuralIntegrity;
+            mappedComponent.MinPowerDraw = source.MinPowerDraw;
+            mappedComponent.MaxPowerDraw = source.MaxPowerDraw;
+            mappedComponent.LifeSupport = source.LifeSupport;
+            mappedComponent.Mass = source.Mass;
+            mappedComponent.Price = source.Price;
+            mappedComponent.Properties = source.Properties;
+
+            // Restore ComponentType reference
+            mappedComponent.ComponentType = componentType;
+
+            // Restore connections to other components (but do not map recursively!)
+            mappedComponent.TopComponentId = source.TopComponentId;
+            mappedComponent.BottomComponentId = source.BottomComponentId;
+            mappedComponent.LeftComponentId = source.LeftComponentId;
+            mappedComponent.RightComponentId = source.RightComponentId;
+
+            // Do NOT map the actual component references (TopComponent, BottomComponent, etc.)
+            // because that would trigger recursion. These should be resolved in a separate step.
+
+            mappedComponent.Connections = source.Connections;
+            mappedComponent.PowerCouplings = source.PowerCouplings;
+
+            return mappedComponent;
         }
     }
 }

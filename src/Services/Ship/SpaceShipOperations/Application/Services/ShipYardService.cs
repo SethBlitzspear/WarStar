@@ -2,11 +2,9 @@
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
-using Microsoft.Extensions.Caching.Memory;
-using System.Data.Common;
 
 namespace Application.Services;
-public class ShipYardService(IShipRepository spaceShipRepository, IMapper mapper, IMemoryCache Cache) : IShipYardService
+public class ShipYardService(IShipRepository spaceShipRepository, IMapper mapper) : IShipYardService
 {
     public async Task<Guid> CreateSpaceShip(CreateSpaceShipDto spaceShipDto)
     {
@@ -46,13 +44,6 @@ public class ShipYardService(IShipRepository spaceShipRepository, IMapper mapper
     public async Task<List<Component>> GetSpaceShipComponents(Guid spaceShipId)
     {
         var components = await spaceShipRepository.GetSpaceShipComponents(spaceShipId);
-        var componentTypes = await GetComponentTypes();
-
-        foreach (var component in components)
-        {
-            component.ComponentType = componentTypes.FirstOrDefault(ct => ct.Id == component.ComponentTypeId)
-                ?? throw new InvalidOperationException($"ComponentType not found for ID {component.ComponentTypeId}");
-        }
 
         var componentLookup = components.ToDictionary(c => c.Id);
 
@@ -76,20 +67,12 @@ public class ShipYardService(IShipRepository spaceShipRepository, IMapper mapper
 
     public async Task<List<ComponentType>> GetComponentTypes()
     {
-        const string cacheKey = "ComponentTypes";
-
-        if (!Cache.TryGetValue(cacheKey, out List<ComponentType>? componentTypes))
-        {
-            componentTypes = mapper.Map<List<ComponentType>>(await spaceShipRepository.GetComponentTypes());
-            Cache.Set(cacheKey, componentTypes);
-        }
-
-        return componentTypes ?? [];
+        return await spaceShipRepository.GetComponentTypes();
     }
 
     public async Task<ComponentType?> GetComponentType(Guid ComponentTypeId)
     {
-        return mapper.Map<ComponentType>(await spaceShipRepository.GetComponentType(ComponentTypeId));
+        return await spaceShipRepository.GetComponentType(ComponentTypeId);
     }
 
     public async Task<ComponentType?> GetComponentType(string name)

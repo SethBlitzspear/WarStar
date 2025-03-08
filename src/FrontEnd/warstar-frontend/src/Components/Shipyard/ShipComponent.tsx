@@ -1,14 +1,14 @@
 import React from 'react';
 import { GridComponentType } from '../../Models/GridComponentType';
 
-import WeaponIcon from '../../icons/ShipComponentTypes/Weapon.png';
+import LaserIcon from '../../icons/ShipComponentTypes/Laser.png';
 import EngineIcon from '../../icons/ShipComponentTypes/Engine.png';
 import ReactorIcon from '../../icons/ShipComponentTypes/Reactor.png';
 import KeelIcon from '../../icons/ShipComponentTypes/Keel.png';
 import DefaultIcon from '../../icons/ShipComponentTypes/Default.png';
 
 const iconMap: Record<string, string> = {
-    weapon: WeaponIcon,
+    laser: LaserIcon,
     engine: EngineIcon,
     reactor: ReactorIcon,
     keel: KeelIcon,

@@ -2,12 +2,15 @@
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.Extensions.Caching.Memory;
 using System.Net.Http.Json;
 
 namespace Infrastructure.Repositories;
 
-public class ShipRepository(HttpClient httpClient, IMapper mapper) : IShipRepository
+public class ShipRepository(HttpClient httpClient, IMapper mapper, IMemoryCache Cache) : IShipRepository
 {
+    private readonly string _compenentTypeCacheKey = "ComponentTypes";
+
     public async Task<Guid> CreateSpaceShip(SpaceShip spaceShip)
     {
         var response = await httpClient.PostAsJsonAsync("api/spaceship", spaceShip);
@@ -40,7 +43,10 @@ public class ShipRepository(HttpClient httpClient, IMapper mapper) : IShipReposi
     public async Task<Component> GetComponent(Guid componentId)
     {
         var response = await httpClient.GetFromJsonAsync<Component>($"api/component/{componentId}");
-        return mapper.Map<Component>(response) ?? new Component();
+        return mapper.Map<Component>(response, async opts =>
+        {
+            opts.Items["ComponentTypeLookup"] = await GetComponentTypes();
+        }) ?? new Component();
     }
     public async Task<Component> UpdateComponent(Component component)
     {
@@ -51,26 +57,47 @@ public class ShipRepository(HttpClient httpClient, IMapper mapper) : IShipReposi
 
     public async Task<List<ComponentType>> GetComponentTypes()
     {
-        var response = await httpClient.GetFromJsonAsync<List<ComponentTypeDto>>("api/componenttype");
-        return mapper.Map<List<ComponentType>>(response) ?? [];
+        if (!Cache.TryGetValue(_compenentTypeCacheKey, out List<ComponentType>? componentTypes))
+        {
+            var response = await httpClient.GetFromJsonAsync<List<ComponentTypeDto>>("api/componenttype");
+            componentTypes = mapper.Map<List<ComponentType>>(response);
+            Cache.Set(_compenentTypeCacheKey, componentTypes);
+            foreach (var component in componentTypes)
+            {
+                Cache.Set($"{_compenentTypeCacheKey}_{component.Name}", component);
+            }
+        }
+
+        return componentTypes ?? [];
     }
+
     public async Task<List<Component>> GetComponents()
     {
         var response = await httpClient.GetFromJsonAsync<List<ComponentDto>>("api/component");
-        return mapper.Map<List<Component>>(response) ?? [];
+        return mapper.Map<List<Component>>(response, async opts =>
+        {
+            opts.Items["ComponentTypeLookup"] = await GetComponentTypes();
+        }) ?? [];
     }
 
     public async Task<List<Component>> GetSpaceShipComponents(Guid spaceShipId)
     {
         var response = await httpClient.GetFromJsonAsync<List<ComponentDto>>($"api/component/SpaceShip/{spaceShipId}");
-        return mapper.Map<List<Component>>(response) ?? [];
+        return mapper.Map<List<Component>>(response, async opts =>
+        {
+            opts.Items["ComponentTypeLookup"] = await GetComponentTypes();
+        }) ?? [];
     }
 
     public async Task<ComponentType?> GetComponentType(string name)
     {
-        var componentTypes = await GetComponentTypes();
+        if (!Cache.TryGetValue($"{_compenentTypeCacheKey}_{name}", out ComponentType? componentType))
+        {
+            var componentTypes = await GetComponentTypes();
 
-        return componentTypes?.Find(ct => ct.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            return componentTypes?.Find(ct => ct.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+        return componentType;
     }
 
     public async Task<ComponentType?> GetComponentType(Guid componentTypeId)

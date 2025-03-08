@@ -1,9 +1,13 @@
 ﻿using Domain.Enums;
+using System.Text.Json;
 
 namespace Domain.Entities;
 
-public sealed class Component
+public class Component
 {
+    private Dictionary<string, object>? _extendedProperties;
+    private string? _properties;
+
     public Guid Id { get; set; }
 
     public Guid ComponentTypeId { get; set; }
@@ -16,7 +20,15 @@ public sealed class Component
     public bool LifeSupport { get; set; }
     public int Mass { get; set; }
     public double Price { get; set; }
-    public string? Properties { get; set; }
+    public string? Properties
+    {
+        get => _properties;
+        set
+        {
+            _properties = value;
+            _extendedProperties = null;
+        }
+    }
 
     public Guid SpaceShipId { get; set; }
     public SpaceShip SpaceShip { get; set; } = null!;
@@ -80,6 +92,25 @@ public sealed class Component
     {
         get => PowerCouplings.HasFlag(ConnectionType.Right);
         set => PowerCouplings = value ? PowerCouplings | ConnectionType.Right : PowerCouplings & ~ConnectionType.Right;
+    }
+
+    public Dictionary<string, object>? ExtendedProperties
+    {
+        get
+        {
+            if (_extendedProperties == null && !string.IsNullOrEmpty(Properties))
+            {
+                try
+                {
+                    _extendedProperties = JsonSerializer.Deserialize<Dictionary<string, object>>(Properties) ?? null;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+            return _extendedProperties;
+        }
     }
 
     public void MapComponents(int x, int y, List<ComponentPosition> mappedComponents)
